@@ -1,0 +1,40 @@
+spring:
+  config:
+    activate:
+      on-profile: local
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3396/careerwry
+    username: careerwry
+    password: 1234qwer
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        highlight_sql: true
+        use_sql_comments: true
+      naming:
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+    open-in-view: true
+    show-sql: true
+
+oauth:
+  kakao:
+    client-id: dfe21954bee1f2b898622d1c4c4e9c00
+    redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+    scope: profile_nickname, profile_image, account_email, openid
+    login-hint:
+    state:
+    nonce:
+    prompt:
+    client-secret: DI6P066lGOvujHWsi064eXTFbFseewtm
+
+
+logging:
+  level:
+    org.hibernate.orm.jdbc.bind: TRACE
