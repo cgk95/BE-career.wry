@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  careerwry-service:
+    depends_on:
+      - careerwry-mysql
+    image: "careerwry"
+    container_name: "careerwry-service"
+    ports:
+      - "8080:8080"
+      - "8001:8001"
+    environment:
+      - BPL_JVM_THREAD_COUNT=50
+      - BPL_DEBUG_ENABLED=true
+      - BPL_DEBUG_PORT=8001
+    platform: linux/amd64
+
+  careerwry-mysql:
+    image: "mysql:8.0.36"
+    container_name: "careerwry-mysql"
+    ports:
+      - "3396:3396"
+    volumes:
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/schema.sql
+    environment:
+      - MYSQL_USER=careerwry
+      - MYSQL_PASSWORD=1q2w3e4r
+      - MYSQL_ROOT_PASSWORD=root_password
+

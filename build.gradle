@@ -39,9 +39,9 @@ dependencies {
 
 bootBuildImage {
     builder = "paketobuildpacks/builder:tiny"
-    if (System.getProperty( "os.arch" ).toLowerCase().startsWith('aarch')) {
-        builder = "ghcr.io/thomasvitale/java-builder-arm64"
-    }
+//    if (System.getProperty( "os.arch" ).toLowerCase().startsWith('aarch')) {
+//        builder = "ghcr.io/thomasvitale/java-builder-arm64"
+//    }
     imageName = "${project.name}"
     environment = ["BP_JVM_VERSION": "17"]
 
