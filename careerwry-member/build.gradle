@@ -27,6 +27,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.flywaydb:flyway-mysql'
+    implementation 'org.springframework.boot:oauth2-resource-server'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
@@ -38,7 +39,7 @@ dependencies {
 
 bootBuildImage {
     builder = "paketobuildpacks/builder:tiny"
-    imageName = "careerwry-member" //"${project.name}"
+    imageName = "careerwry-member"
     environment = ["BP_JVM_VERSION": "17"]
 
     docker {
