@@ -1,11 +1,11 @@
 name: Commit Stage
 on:
   pull_request:
-    branches: [ release, master ]
+    branches: [ develop, release, main ]
     paths:
       - 'careerwry-member/**'
   push:
-    branches: [ develop ]
+    branches-ignore: [ develop, release, main ]
     paths:
       - 'careerwry-member/**'
 
@@ -33,6 +33,7 @@ jobs:
           cache: gradle
       - name: Build, unit tests and integration tests
         run: |
+          cd careerwry-member
           chmod +x gradlew
           ./gradlew build
       - name: Code vulnerability scanning
