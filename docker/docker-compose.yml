@@ -1,0 +1,25 @@
+services:
+  career.wry-member:
+    image: "careerwry-member"
+    container_name: "career.wry-member"
+    ports:
+      - "9001:9001"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://career.wry-mysql:3306/careerwry-member
+      - SPRING_DATASOURCE_USERNAME=careerwry
+      - SPRING_DATASOURCE_PASSWORD=1q2w3e4r
+      - BPL_DEBUG_ENABLED=true
+      - BPL_DEBUG_PORT=8000
+
+# Backing Services
+  career.wry-mysql:
+    image: "mysql:8.0.36"
+    container_name: "career.wry-mysql"
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql/init.sql:/docker-entrypoint-initdb.d/schema.sql
+    environment:
+      - MYSQL_USER=careerwry
+      - MYSQL_PASSWORD=1q2w3e4r
+      - MYSQL_ROOT_PASSWORD=root_password
