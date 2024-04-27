@@ -5,7 +5,7 @@ on:
     paths:
       - 'careerwry-member/**'
   push:
-    branches-ignore:   [ develop ]
+    branches: [ develop ]
     paths:
       - 'careerwry-member/**'
 
