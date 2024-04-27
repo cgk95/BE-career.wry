@@ -1,1 +1,3 @@
 rootProject.name = 'careerwry'
+include('careerwry-member')
+include('careerwry-edge')

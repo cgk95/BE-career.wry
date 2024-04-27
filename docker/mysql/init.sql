@@ -1,1 +1,1 @@
-CREATE DATABASE IF NOT EXISTS careerwry;
+CREATE DATABASE `careerwry-member`;
