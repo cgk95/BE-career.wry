@@ -64,11 +64,12 @@ spring:
         initial-interval: 1000 # 1s
         max-interval: 2000 # 2s
         multiplier: 1.1
-#  session:
-#    store-type: redis
-#    timeout: 10m
-#    redis:
-#      namespace: careerwry:edge
+
+  session:
+    store-type: redis
+    timeout: 10m
+    redis:
+      namespace: careerwry:edge
 
 #  security:
 #    oauth2:

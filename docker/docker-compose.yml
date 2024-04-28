@@ -23,3 +23,9 @@ services:
       - MYSQL_USER=careerwry
       - MYSQL_PASSWORD=1q2w3e4r
       - MYSQL_ROOT_PASSWORD=root_password
+
+  careerwry-redis:
+    image: "redis:7.2.4"
+    container_name: "careerwry-redis"
+    ports:
+      - "6379:6379"
