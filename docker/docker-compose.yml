@@ -1,25 +1,78 @@
 services:
-  career.wry-member:
+  careerwry-edge:
+    depends_on:
+      careerwry-keycloak:
+        condition: service_healthy
+        restart: true
+      careerwry-redis:
+        condition: service_healthy
+        restart: true
+
+    image: "careerwry-edge"
+    container_name: "careerwry-edge"
+    ports:
+      - "9000:9000"
+      - "8000:8000"
+    environment:
+        - BPL_DEBUG_ENABLED=true
+        - BPL_DEBUG_PORT=8000
+        - MEMBER_SERVICE_URL=http://careerwry-member:9001
+        - SPRING_DATA_REDIS_HOST=careerwry-redis
+        - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_KEYCLOAK_ISSUER_URI=http://host.docker.internal:8080/realms/careerwry
+
+  careerwry-member:
+    depends_on:
+      - careerwry-mysql
     image: "careerwry-member"
-    container_name: "career.wry-member"
+    container_name: "careerwry-member"
     ports:
       - "9001:9001"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://career.wry-mysql:3306/careerwry-member
+      - SPRING_DATASOURCE_URL=jdbc:mysql://careerwry-mysql:3306/careerwry-member
       - SPRING_DATASOURCE_USERNAME=careerwry
       - SPRING_DATASOURCE_PASSWORD=1q2w3e4r
       - BPL_DEBUG_ENABLED=true
-      - BPL_DEBUG_PORT=8000
+      - BPL_DEBUG_PORT=8002
 
 # Backing Services
-  career.wry-mysql:
+  careerwry-mysql:
     image: "mysql:8.0.36"
-    container_name: "career.wry-mysql"
+    container_name: "careerwry-mysql"
     ports:
       - "3306:3306"
     volumes:
-      - ./mysql/init.sql:/docker-entrypoint-initdb.d/schema.sql
+      - ./mysql/schema.sql:/docker-entrypoint-initdb.d/schema.sql
     environment:
       - MYSQL_USER=careerwry
       - MYSQL_PASSWORD=1q2w3e4r
       - MYSQL_ROOT_PASSWORD=root_password
+
+  careerwry-redis:
+    image: "redis:7.2.4"
+    container_name: "careerwry-redis"
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  careerwry-keycloak:
+    image: "quay.io/keycloak/keycloak:19.0"
+    container_name: "careerwry-keycloak"
+    command: start-dev --import-realm # 키클록을 개발모드로 시작한다
+    volumes:
+      - ./keycloak:/opt/keycloak/data/import
+    environment: # 어드민 유저의 크리덴션을 환경 변수로 정의한다
+      - KEYCLOAK_ADMIN=user
+      - KEYCLOAK_ADMIN_PASSWORD=password
+      - KC_HEALTH_ENABLED=true
+      - KC_METRICS_ENABLED=true
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: "curl --head -fsS http://localhost:8080/health/ready"
+      interval: 30s
+      timeout: 10s
+      retries: 12
